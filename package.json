@@ -1,0 +1,35 @@
+{
+  "name": "mystic-matrix-backend",
+  "version": "1.0.0",
+  "description": "Magical Inventory & Demand Forecasting REST API for Madam Hex",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node ../database/seed/seedData.js"
+  },
+  "keywords": [
+    "inventory",
+    "forecasting",
+    "halloween",
+    "react",
+    "express",
+    "sqlite"
+  ],
+  "author": "Madam Hex Dev Team",
+  "license": "MIT",
+  "dependencies": {
+    "@clerk/express": "^2.1.86",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.2",
+    "groq-sdk": "^1.6.0",
+    "xlsx": "^0.18.5"
+  }
+}
