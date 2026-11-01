@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="cauldronGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B2B" />
+      <stop offset="50%" stop-color="#9D4EDD" />
+      <stop offset="100%" stop-color="#F5BA42" />
+    </linearGradient>
+    <radialGradient id="liquidGlow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#00F5D4" />
+      <stop offset="60%" stop-color="#9D4EDD" />
+      <stop offset="100%" stop-color="#240046" />
+    </radialGradient>
+  </defs>
+  <!-- Flame/Rays -->
+  <path d="M35 88 Q50 98 65 88 Q50 82 35 88 Z" fill="#FF6B2B" opacity="0.8"/>
+  <circle cx="50" cy="86" r="4" fill="#F5BA42"/>
+  <!-- Feet -->
+  <path d="M28 72 L22 84 L30 84 Z" fill="#240046" stroke="#F5BA42" stroke-width="1.5"/>
+  <path d="M72 72 L78 84 L70 84 Z" fill="#240046" stroke="#F5BA42" stroke-width="1.5"/>
+  <path d="M50 78 L50 88" stroke="#F5BA42" stroke-width="2"/>
+  <!-- Body -->
+  <ellipse cx="50" cy="58" rx="36" ry="24" fill="#150A26" stroke="#9D4EDD" stroke-width="2.5"/>
+  <!-- Liquid Surface -->
+  <ellipse cx="50" cy="40" rx="28" ry="8" fill="url(#liquidGlow)"/>
+  <!-- Rim -->
+  <ellipse cx="50" cy="38" rx="32" ry="7" fill="none" stroke="#F5BA42" stroke-width="2.5"/>
+  <!-- Handles -->
+  <path d="M18 42 C10 42 10 54 18 54" fill="none" stroke="#F5BA42" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M82 42 C90 42 90 54 82 54" fill="none" stroke="#F5BA42" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Bubbles -->
+  <circle cx="42" cy="36" r="3" fill="#00F5D4" opacity="0.85"/>
+  <circle cx="54" cy="34" r="4" fill="#FFD700" opacity="0.9"/>
+  <circle cx="62" cy="38" r="2.5" fill="#FF6B2B" opacity="0.8"/>
+  <circle cx="48" cy="24" r="2.5" fill="#00F5D4" opacity="0.7"/>
+  <circle cx="36" cy="20" r="3.5" fill="#FF6B2B" opacity="0.75"/>
+</svg>
+

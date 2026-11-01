@@ -197,11 +197,24 @@ class ShopController {
                 LIMIT 4
             `).all();
 
+            // Popular Magical Ingredients (Bat Wings, Mandrake Roots, Vampire Blood, etc.)
+            const popularIngredients = db.prepare(`
+                SELECT p.id, p.name, p.sku, p.item_type, p.description, p.image_url, p.selling_price, p.current_stock,
+                       c.name as category_name
+                FROM products p
+                JOIN categories c ON c.id = p.category_id
+                WHERE p.is_archived = 0 AND p.current_stock > 0
+                  AND (c.name LIKE '%Ingredient%' OR p.item_type = 'INGREDIENT' OR p.sku LIKE 'ING-%')
+                ORDER BY p.current_stock DESC
+                LIMIT 4
+            `).all();
+
             res.json({
                 success: true,
                 data: {
                     featured,
                     recommended,
+                    popularIngredients,
                     seasonalOffers: [
                         {
                             code: 'HEX2026',
