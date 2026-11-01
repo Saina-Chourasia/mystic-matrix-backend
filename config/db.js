@@ -82,6 +82,16 @@ function getDb() {
             console.error('Admin password sync error:', e.message);
         }
 
+        // Ensure Madam Hex has a valid, enchanted avatar URL
+        try {
+            const adminUser = dbInstance.prepare("SELECT id, avatar_url FROM users WHERE id = 1").get();
+            if (adminUser && (!adminUser.avatar_url || adminUser.avatar_url.includes('images.clerk.dev'))) {
+                dbInstance.prepare("UPDATE users SET avatar_url = '/icons/madam_hex_avatar.svg' WHERE id = 1").run();
+            }
+        } catch (e) {
+            console.error('Admin avatar sync error:', e.message);
+        }
+
         // Ensure Clerk ID column is present on users
         try {
             const userCols = dbInstance.prepare("PRAGMA table_info(users)").all();
