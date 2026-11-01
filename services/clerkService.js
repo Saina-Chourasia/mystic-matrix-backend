@@ -145,7 +145,7 @@ class ClerkService {
         // Bind clerk_id to Madam Hex
         const updated = userModel.linkClerkId(adminUser.id, trimmedClerkId);
 
-        // Invalidate legacy password hash to enforce OAuth security
+        // Enforce OAuth security by ensuring password hash remains permanently revoked
         try {
             const { getDb } = require('../config/db');
             const crypto = require('crypto');
