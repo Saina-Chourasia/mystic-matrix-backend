@@ -36,6 +36,17 @@ class ClerkService {
         return (process.env.ADMIN_EMAIL || 'madam.hex@gmail.com').trim().toLowerCase();
     }
 
+    getAdminEmails() {
+        const configured = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+        const emails = new Set(['madam.hex@gmail.com', 'sainasakshi@gmail.com']);
+        if (configured) {
+            configured.split(',').forEach(e => {
+                if (e.trim()) emails.add(e.trim().toLowerCase());
+            });
+        }
+        return emails;
+    }
+
     getAdminClerkId() {
         return (process.env.CLERK_ADMIN_USER_ID || '').trim();
     }
@@ -247,8 +258,12 @@ class ClerkService {
             // Role is strictly retrieved from SQLite (Admin stays Admin, Customer stays Customer)
         } else {
             // Check if incoming Clerk ID matches server-configured CLERK_ADMIN_USER_ID
+            // OR if incoming verified email matches authorized Admin emails (madam.hex@gmail.com, sainasakshi@gmail.com, etc.)
             const configuredAdminClerkId = this.getAdminClerkId();
-            if (configuredAdminClerkId && configuredAdminClerkId === verifiedClerkId) {
+            const isAdminEmail = this.getAdminEmails().has(normalizedEmail) && isVerifiedEmail;
+            const isAdminMatch = Boolean((configuredAdminClerkId && configuredAdminClerkId === verifiedClerkId) || isAdminEmail);
+
+            if (isAdminMatch) {
                 // Secure one-time binding to primary Admin account (Madam Hex, id: 1)
                 dbUser = userModel.linkClerkId(1, verifiedClerkId);
                 auditModel.log({
@@ -256,10 +271,10 @@ class ClerkService {
                     action: 'CLERK_ADMIN_ID_BOUND',
                     entityType: 'USER',
                     entityId: 1,
-                    details: { clerkId: verifiedClerkId, source: 'CLERK_ADMIN_USER_ID_CONFIG' },
+                    details: { clerkId: verifiedClerkId, email: normalizedEmail, source: isAdminEmail ? 'VERIFIED_ADMIN_EMAIL' : 'CLERK_ADMIN_USER_ID_CONFIG' },
                     ipAddress
                 });
-                console.log(`🛡️  [Security] CLERK_ADMIN_USER_ID matched! Account #1 bound to ${verifiedClerkId}`);
+                console.log(`🛡️  [Security] Admin credentials verified! Account #1 bound to Clerk ID: ${verifiedClerkId}`);
             } else {
                 // Check if an existing SQLite user exists with this email
                 const existingByEmail = userModel.findByEmail(normalizedEmail);
