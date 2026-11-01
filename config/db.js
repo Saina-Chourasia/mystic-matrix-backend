@@ -1,4 +1,15 @@
-const { DatabaseSync } = require('node:sqlite');
+let DatabaseSync;
+try {
+    DatabaseSync = require('node:sqlite').DatabaseSync;
+} catch (err) {
+    if (err.code === 'ERR_UNKNOWN_BUILTIN_MODULE') {
+        throw new Error(
+            "Node SQLite requires Node 22.5+ with the '--experimental-sqlite' flag enabled, or Node 24+. " +
+            "Please start your server with 'npm start' or 'node --experimental-sqlite server.js', or set NODE_OPTIONS='--experimental-sqlite' in your environment."
+        );
+    }
+    throw err;
+}
 const path = require('node:path');
 const fs = require('node:fs');
 

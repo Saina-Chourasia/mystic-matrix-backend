@@ -1,3 +1,22 @@
+// Ensure node:sqlite is accessible under Node 22+ even if --experimental-sqlite flag was omitted by runner (e.g. Render/Docker)
+try {
+    require('node:sqlite');
+} catch (err) {
+    if (err.code === 'ERR_UNKNOWN_BUILTIN_MODULE' && !process.env._RESPAWNED_SQLITE) {
+        console.log('🔄 Detected Node 22 without --experimental-sqlite flag. Self-respawning with flag enabled...');
+        const { spawn } = require('node:child_process');
+        const child = spawn(process.execPath, ['--experimental-sqlite', ...process.execArgv, ...process.argv.slice(1)], {
+            stdio: 'inherit',
+            env: { ...process.env, _RESPAWNED_SQLITE: '1' }
+        });
+        child.on('exit', (code, signal) => {
+            if (signal) process.kill(process.pid, signal);
+            process.exit(code ?? 0);
+        });
+        return;
+    }
+}
+
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
